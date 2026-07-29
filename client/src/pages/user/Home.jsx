@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import Navbar from '../../components/Navbar';
 import Hero from '../../components/Hero';
-import StatsBar from '../../components/StatsBar';
 import LogoCloud from '../../components/LogoCloud';
 import BentoGrid from '../../components/BentoGrid';
 import Pipeline from '../../components/Pipeline';
@@ -46,15 +45,12 @@ export default function Home() {
       
       <main className="pt-24">
         <Hero />
-        <StatsBar />
-        <LogoCloud />
         <BentoGrid />
         <Pipeline />
         <Testimonials />
         <FAQ />
         <CTA />
       </main>
-
       <Footer />
     </div>
   );
