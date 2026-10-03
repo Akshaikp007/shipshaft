@@ -225,43 +225,6 @@ function LoginFormContent() {
             </button>
           </form>
 
-          {/* Quick Test Credentials Helper */}
-          <div className="mt-6 pt-4 border-t border-outline-variant/20 text-xs text-on-surface-variant space-y-1">
-            <span className="font-semibold text-on-surface block">Quick Fill Test Accounts:</span>
-            <div className="flex flex-wrap gap-2 text-[11px] font-mono">
-              <button
-                type="button"
-                onClick={() => {
-                  setEmail('admin@shipshaft.com');
-                  setPassword('Admin@123456');
-                }}
-                className="px-2 py-1 rounded bg-surface-container-high hover:bg-surface-dim transition-colors text-primary"
-              >
-                Admin
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setEmail('agent@shipshaft.com');
-                  setPassword('Agent@123456');
-                }}
-                className="px-2 py-1 rounded bg-surface-container-high hover:bg-surface-dim transition-colors text-secondary"
-              >
-                Agent
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setEmail('customer@shipshaft.com');
-                  setPassword('Customer@123456');
-                }}
-                className="px-2 py-1 rounded bg-surface-container-high hover:bg-surface-dim transition-colors text-tertiary"
-              >
-                Customer
-              </button>
-            </div>
-          </div>
-
           {/* Footer Link */}
           <div className="mt-6 text-center border-t border-outline-variant/30 pt-4">
             <p className="font-body-md text-body-md text-on-surface-variant">
