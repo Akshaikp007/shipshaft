@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 const PARTNERS = [
   {
@@ -32,11 +33,13 @@ export default function LogoCloud() {
         </p>
         <div className="flex flex-wrap justify-center items-center gap-16 md:gap-24 opacity-40 hover:opacity-80 transition-opacity duration-300">
           {PARTNERS.map((partner, index) => (
-            <img
+            <Image
               key={index}
               alt={partner.name}
-              className="h-7 w-auto grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
+              className="h-7 w-auto grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer object-contain"
               src={partner.logo}
+              width={140}
+              height={28}
             />
           ))}
         </div>

@@ -1,88 +1,99 @@
 import React from 'react';
+import Link from 'next/link';
+import Icon from '@/components/ui/Icon';
 
 export default function Footer() {
   return (
-    <footer className="bg-surface py-24 border-t border-outline-variant/20 text-left">
-      <div className="max-w-container-max mx-auto px-edge-margin-mobile md:px-edge-margin-desktop">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-12">
-          
+    <footer className="bg-surface border-t border-outline-variant/30 py-16 mt-16 text-left">
+      <div className="max-w-6xl mx-auto px-6 md:px-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 md:gap-12">
           {/* Logo & Description */}
-          <div className="col-span-2">
-            <span className="font-display-hero text-headline-md text-on-surface mb-8 block select-none">
-              ShipShaft
-            </span>
-            <p className="text-on-surface-variant max-w-xs mb-8 leading-relaxed font-body-md">
-              Redefining global logistics through atmospheric data and precision intelligence.
+          <div className="col-span-2 lg:col-span-2 flex flex-col gap-3">
+            <Link
+              href="/"
+              className="font-display-hero text-headline-md tracking-tighter text-on-surface flex items-center gap-2 font-bold select-none hover:opacity-90 transition-opacity"
+            >
+              <Icon name="deployed_code" size={24} className="text-primary" />
+              <span>ShipShaft</span>
+            </Link>
+            <p className="font-body-md text-body-md text-on-surface-variant max-w-xs mt-1 leading-relaxed">
+              Precision in motion. The standard for enterprise logistics intelligence.
             </p>
-            <div className="flex gap-4">
-              <a 
-                className="w-12 h-12 rounded-xl border border-outline-variant flex items-center justify-center hover:text-primary transition-colors hover:border-primary" 
+            <div className="flex gap-3 mt-3">
+              <a
+                className="w-10 h-10 rounded-xl border border-outline-variant/40 flex items-center justify-center text-outline hover:text-primary hover:border-primary transition-colors"
                 href="#"
+                aria-label="Share"
               >
-                <span className="material-symbols-outlined">share</span>
+                <Icon name="share" size={18} />
               </a>
-              <a 
-                className="w-12 h-12 rounded-xl border border-outline-variant flex items-center justify-center hover:text-primary transition-colors hover:border-primary" 
+              <a
+                className="w-10 h-10 rounded-xl border border-outline-variant/40 flex items-center justify-center text-outline hover:text-primary hover:border-primary transition-colors"
                 href="#"
+                aria-label="RSS Feed"
               >
-                <span className="material-symbols-outlined">rss_feed</span>
+                <Icon name="rss_feed" size={18} />
               </a>
             </div>
           </div>
 
-          {/* Links: Platform */}
-          <div>
-            <p className="font-bold text-on-surface mb-6 font-title-lg">Platform</p>
-            <ul className="space-y-4 text-on-surface-variant">
-              <li><a className="hover:text-primary transition-colors font-body-md" href="#">Overview</a></li>
-              <li><a className="hover:text-primary transition-colors font-body-md" href="#">Tracking</a></li>
-              <li><a className="hover:text-primary transition-colors font-body-md" href="#">Analytics</a></li>
-              <li><a className="hover:text-primary transition-colors font-body-md" href="#">Security</a></li>
-            </ul>
-          </div>
-
-          {/* Links: Company */}
-          <div>
-            <p className="font-bold text-on-surface mb-6 font-title-lg">Company</p>
-            <ul className="space-y-4 text-on-surface-variant">
-              <li><a className="hover:text-primary transition-colors font-body-md" href="#">About</a></li>
-              <li><a className="hover:text-primary transition-colors font-body-md" href="#">Careers</a></li>
-              <li><a className="hover:text-primary transition-colors font-body-md" href="#">Press</a></li>
-              <li><a className="hover:text-primary transition-colors font-body-md" href="#">Contact</a></li>
-            </ul>
+          {/* Links: Product */}
+          <div className="flex flex-col gap-3">
+            <h4 className="font-label-md text-label-md text-on-surface font-semibold mb-1">Product</h4>
+            <Link className="font-body-md text-sm text-on-surface-variant hover:text-primary transition-colors" href="/#solutions">
+              Platform
+            </Link>
+            <Link className="font-body-md text-sm text-on-surface-variant hover:text-primary transition-colors" href="/track">
+              Tracking
+            </Link>
+            <Link className="font-body-md text-sm text-on-surface-variant hover:text-primary transition-colors" href="/#solutions">
+              Solutions
+            </Link>
+            <a className="font-body-md text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">
+              Pricing
+            </a>
           </div>
 
           {/* Links: Resources */}
-          <div>
-            <p className="font-bold text-on-surface mb-6 font-title-lg">Resources</p>
-            <ul className="space-y-4 text-on-surface-variant">
-              <li><a className="hover:text-primary transition-colors font-body-md" href="#">Docs</a></li>
-              <li><a className="hover:text-primary transition-colors font-body-md" href="#">API Reference</a></li>
-              <li><a className="hover:text-primary transition-colors font-body-md" href="#">Status</a></li>
-              <li><a className="hover:text-primary transition-colors font-body-md" href="#">Support</a></li>
-            </ul>
+          <div className="flex flex-col gap-3">
+            <h4 className="font-label-md text-label-md text-on-surface font-semibold mb-1">Resources</h4>
+            <a className="font-body-md text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">
+              Developers
+            </a>
+            <a className="font-body-md text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">
+              Documentation
+            </a>
+            <a className="font-body-md text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">
+              Status
+            </a>
+            <a className="font-body-md text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">
+              Support
+            </a>
           </div>
 
           {/* Links: Legal */}
-          <div>
-            <p className="font-bold text-on-surface mb-6 font-title-lg">Legal</p>
-            <ul className="space-y-4 text-on-surface-variant">
-              <li><a className="hover:text-primary transition-colors font-body-md" href="#">Privacy</a></li>
-              <li><a className="hover:text-primary transition-colors font-body-md" href="#">Terms</a></li>
-              <li><a className="hover:text-primary transition-colors font-body-md" href="#">GDPR</a></li>
-            </ul>
+          <div className="flex flex-col gap-3">
+            <h4 className="font-label-md text-label-md text-on-surface font-semibold mb-1">Legal</h4>
+            <a className="font-body-md text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">
+              Privacy Policy
+            </a>
+            <a className="font-body-md text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">
+              Terms of Service
+            </a>
+            <a className="font-body-md text-sm text-on-surface-variant hover:text-primary transition-colors" href="#">
+              GDPR Compliance
+            </a>
           </div>
-
         </div>
 
-        {/* Copyright */}
-        <div className="mt-20 pt-8 border-t border-outline-variant/10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-on-surface-variant text-sm font-body-md">
+        {/* Bottom Bar */}
+        <div className="mt-12 pt-6 border-t border-outline-variant/20 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="font-label-sm text-label-sm text-on-surface-variant">
             © 2026 ShipShaft Logistics Intelligence. Precision in motion.
           </p>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
-            <span className="text-xs text-outline font-medium">All systems operational</span>
+            <span className="text-xs text-outline font-medium">All telemetry systems operational</span>
           </div>
         </div>
       </div>

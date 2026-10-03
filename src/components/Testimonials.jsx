@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 export default function Testimonials() {
   return (
@@ -7,16 +8,18 @@ export default function Testimonials() {
         {/* Quote Block */}
         <div>
           <h2 className="font-headline-lg text-headline-lg mb-8 leading-tight text-on-surface">
-            Innovating for the world's most complex fleets.
+            Innovating for the world&apos;s most complex fleets.
           </h2>
           <p className="font-body-lg text-body-lg text-on-surface-variant mb-12 italic leading-relaxed">
-            "Switching to ShipShaft reduced our delivery discrepancies by 42% in the first quarter. Their API is by far the most stable we've integrated with in years."
+            &ldquo;Switching to ShipShaft reduced our delivery discrepancies by 42% in the first quarter. Their API is by far the most stable we&apos;ve integrated with in years.&rdquo;
           </p>
           <div className="flex items-center gap-5">
-            <img
+            <Image
               alt="Sarah Jenkins"
               className="w-16 h-16 rounded-full object-cover shadow-xl"
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeMAYn6LxLcq5biOxnp1FhnKUYZsnUOCxbZjkpDb0eRYCTHicgRRJO9_ZZK0ERxaKLRqCKo06CGZ2NM8TiZKvHcYAQO8-ZRUyMJERuT_4TaHVTUA2ok3oapwqCztV6AihhcM-7LOAEckoAKBEPXrTz9y-sHtDGEhfo2LXtVzy_NXsLL-jayvT5CTdJ_10kqlictuGaeOxZrGiuDuyzKIkplSnruySa2mYsU3xaodUldo7G0k1cuSVIhA"
+              width={64}
+              height={64}
             />
             <div>
               <p className="font-bold text-lg text-on-surface">Sarah Jenkins</p>

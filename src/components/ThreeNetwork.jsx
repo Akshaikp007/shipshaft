@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import Icon from '@/components/ui/Icon';
 
 export default function ThreeNetwork() {
   const containerRef = useRef(null);
@@ -188,14 +189,14 @@ export default function ThreeNetwork() {
       <div ref={containerRef} className="w-full h-full min-h-[500px]" />
       
       {/* Floating Active Nodes Overlay */}
-      <div className="absolute top-6 right-6 md:top-10 md:right-10 glass-panel p-6 rounded-2xl shadow-lg animate-bounce-subtle select-none">
-        <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-            <span className="material-symbols-outlined text-primary">hub</span>
+      <div className="absolute top-6 left-6 md:top-8 md:left-8 glass-panel p-4 rounded-xl shadow-lg border border-outline-variant/30 select-none z-10">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
+            <Icon name="hub" size={20} className="text-primary" />
           </div>
           <div>
-            <p className="font-label-sm text-label-sm text-outline uppercase tracking-wider">Nodes Active</p>
-            <p className="font-title-lg text-title-lg text-on-surface font-semibold flex items-center gap-2">
+            <p className="font-label-sm text-label-sm text-outline uppercase tracking-wider font-semibold">Active Nodes</p>
+            <p className="font-title-lg text-title-lg text-on-surface font-bold flex items-center gap-1.5">
               14,294 
               <span className="text-tertiary text-xs font-semibold">+12%</span>
             </p>

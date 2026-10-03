@@ -1,0 +1,16 @@
+/**
+ * ShipShaft - 9-Stage Shipment Status Constants
+ */
+export const SHIPMENT_STATUS = Object.freeze({
+  BOOKED: 'BOOKED',
+  PAYMENT_CONFIRMED: 'PAYMENT_CONFIRMED',
+  ASSIGNED: 'ASSIGNED',
+  PICKED_UP: 'PICKED_UP',
+  ORIGIN_HUB: 'ORIGIN_HUB',
+  IN_TRANSIT: 'IN_TRANSIT',
+  DESTINATION_HUB: 'DESTINATION_HUB',
+  OUT_FOR_DELIVERY: 'OUT_FOR_DELIVERY',
+  DELIVERED: 'DELIVERED',
+});
+
+export const ALL_SHIPMENT_STATUSES = Object.freeze(Object.values(SHIPMENT_STATUS));

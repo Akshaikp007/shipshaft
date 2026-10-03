@@ -1,4 +1,4 @@
-import React from 'react';
+import Link from 'next/link';
 
 export default function CTA() {
   return (
@@ -17,12 +17,12 @@ export default function CTA() {
             Move with absolute precision.
           </h2>
           <div className="flex flex-wrap justify-center gap-6">
-            <button className="bg-white text-primary px-12 py-6 rounded-2xl font-bold text-lg transition-all btn-premium shadow-xl cursor-pointer">
+            <Link href="/register" className="bg-white text-primary px-12 py-6 rounded-2xl font-bold text-lg transition-all btn-premium shadow-xl cursor-pointer">
               Start Free Trial
-            </button>
-            <button className="bg-primary-container text-white px-12 py-6 rounded-2xl font-bold text-lg border border-white/20 transition-all btn-premium cursor-pointer">
-              Speak with Solutions
-            </button>
+            </Link>
+            <Link href="/track" className="bg-primary-container text-white px-12 py-6 rounded-2xl font-bold text-lg border border-white/20 transition-all btn-premium cursor-pointer">
+              Track Shipment
+            </Link>
           </div>
         </div>
         

@@ -1,17 +1,15 @@
 "use client";
 
 import React, { useEffect } from 'react';
-import Navbar from '../components/Navbar';
-import Hero from '../components/Hero';
-import BentoGrid from '../components/BentoGrid';
-import Pipeline from '../components/Pipeline';
-import Testimonials from '../components/Testimonials';
-import FAQ from '../components/FAQ';
-import CTA from '../components/CTA';
-import Footer from '../components/Footer';
+import Hero from '@/components/Hero';
+import BentoGrid from '@/components/BentoGrid';
+import Pipeline from '@/components/Pipeline';
+import Testimonials from '@/components/Testimonials';
+import FAQ from '@/components/FAQ';
+import CTA from '@/components/CTA';
 
-export default function Home() {
-  // Set up the IntersectionObserver for section animations
+export default function HomePage() {
+  // Section scroll animation via IntersectionObserver
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -26,14 +24,11 @@ export default function Home() {
     );
 
     const animatedElements = document.querySelectorAll('section > div');
-    
     animatedElements.forEach((el) => {
-      // Ensure initial style classes are present for transition
       el.classList.add('transition-all', 'duration-1000', 'ease-out', 'opacity-0', 'translate-y-12');
       observer.observe(el);
     });
 
-    // Cleanup observer on unmount
     return () => {
       animatedElements.forEach((el) => observer.unobserve(el));
       observer.disconnect();
@@ -41,18 +36,17 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="mesh-bg text-on-background font-body-md overflow-x-hidden selection:bg-primary-fixed selection:text-primary min-h-screen">
-      <Navbar />
-      
-      <main className="pt-24">
-        <Hero />
+    <main className="pt-24">
+      <Hero />
+      <div id="solutions">
         <BentoGrid />
-        <Pipeline />
-        <Testimonials />
+      </div>
+      <Pipeline />
+      <Testimonials />
+      <div id="faq">
         <FAQ />
-        <CTA />
-      </main>
-      <Footer />
-    </div>
+      </div>
+      <CTA />
+    </main>
   );
 }
