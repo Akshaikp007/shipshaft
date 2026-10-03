@@ -4,6 +4,7 @@ import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Icon from '@/components/ui/Icon';
+import { resolvePostLoginDestination } from '@/lib/constants/roles';
 
 function LoginFormContent() {
   const router = useRouter();
@@ -58,7 +59,10 @@ function LoginFormContent() {
       }
 
       setLoginMessage('Authenticated successfully. Redirecting to workspace...');
-      const destination = redirectParam || data.redirectTo || '/dashboard';
+      const destination = resolvePostLoginDestination(
+        data.user?.role,
+        redirectParam || data.redirectTo
+      );
       setTimeout(() => {
         router.push(destination);
         router.refresh();

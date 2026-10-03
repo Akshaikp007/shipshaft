@@ -98,11 +98,11 @@ export default function AdminSidebar({ adminData }) {
       {/* Footer Area */}
       <div className="px-4 mt-auto pt-4 border-t border-outline-variant/20 flex flex-col gap-2">
         <Link
-          href="/dashboard"
+          href="/"
           className="flex items-center gap-2.5 px-3 py-2 text-on-surface-variant hover:text-primary text-xs font-semibold rounded-lg transition-colors"
         >
-          <Icon name="swap_horiz" size={16} />
-          <span>Switch to Customer View</span>
+          <Icon name="public" size={16} />
+          <span>Public Portal</span>
         </Link>
         <button
           type="button"

@@ -76,8 +76,24 @@ export async function middleware(request) {
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
 
-    if (isCustomerRoute && session.role === 'AGENT') {
-      return NextResponse.redirect(new URL('/agent/dashboard', request.url));
+    // Prevent ADMIN from accessing customer dashboard or customer settings
+    if (session.role === 'ADMIN') {
+      if (pathname === '/dashboard' || pathname.startsWith('/dashboard/')) {
+        return NextResponse.redirect(new URL('/admin', request.url));
+      }
+      if (pathname === '/settings' || pathname.startsWith('/settings/')) {
+        return NextResponse.redirect(new URL('/admin/settings', request.url));
+      }
+    }
+
+    // Prevent AGENT from accessing customer routes
+    if (session.role === 'AGENT') {
+      if (pathname === '/settings' || pathname.startsWith('/settings/')) {
+        return NextResponse.redirect(new URL('/agent/settings', request.url));
+      }
+      if (isCustomerRoute) {
+        return NextResponse.redirect(new URL('/agent/dashboard', request.url));
+      }
     }
   }
 

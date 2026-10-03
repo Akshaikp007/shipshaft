@@ -1,6 +1,7 @@
 import React from 'react';
 import AgentShell from '@/components/agent/AgentShell';
-import { getCurrentUser } from '@/lib/auth/authorization';
+import { requireRole } from '@/lib/auth/authorization';
+import { ROLES } from '@/lib/constants/roles';
 import { connectDB } from '@/lib/db';
 import Agent from '@/lib/models/Agent';
 import '@/lib/models/Branch';
@@ -14,7 +15,7 @@ export const metadata = {
 };
 
 export default async function AgentLayout({ children }) {
-  const user = await getCurrentUser();
+  const user = await requireRole([ROLES.AGENT, ROLES.ADMIN]);
   let agent = null;
   if (user) {
     await connectDB();

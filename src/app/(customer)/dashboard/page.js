@@ -8,6 +8,7 @@ import { getCurrentUser } from '@/lib/auth/authorization';
 import { connectDB } from '@/lib/db';
 import Shipment from '@/lib/models/Shipment';
 import TrackingEvent from '@/lib/models/TrackingEvent';
+import { ROLES } from '@/lib/constants/roles';
 import '@/lib/models/Branch';
 
 export const metadata = {
@@ -19,6 +20,14 @@ export default async function CustomerDashboardPage() {
   const user = await getCurrentUser();
   if (!user) {
     redirect('/login?redirect=/dashboard');
+  }
+
+  if (user.role === ROLES.ADMIN) {
+    redirect('/admin');
+  }
+
+  if (user.role === ROLES.AGENT) {
+    redirect('/agent/dashboard');
   }
 
   await connectDB();

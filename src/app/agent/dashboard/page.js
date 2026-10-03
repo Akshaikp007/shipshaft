@@ -21,7 +21,7 @@ export default async function AgentDashboardPage() {
   }
 
   if (user.role !== ROLES.AGENT && user.role !== ROLES.ADMIN) {
-    redirect('/login');
+    redirect('/dashboard');
   }
 
   await connectDB();

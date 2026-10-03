@@ -73,11 +73,11 @@ export default function AdminHeader() {
           ))}
           <div className="pt-2 mt-2 border-t border-outline-variant/20 flex flex-col gap-1">
             <Link
-              href="/dashboard"
-              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-on-surface-variant"
+              href="/"
+              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-on-surface-variant hover:text-on-surface transition-colors"
             >
-              <Icon name="swap_horiz" size={18} />
-              <span>Customer View</span>
+              <Icon name="public" size={18} />
+              <span>Public Portal</span>
             </Link>
             <button
               type="button"

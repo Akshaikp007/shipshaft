@@ -1,6 +1,7 @@
 import React from 'react';
 import AdminShell from '@/components/admin/AdminShell';
-import { getCurrentUser } from '@/lib/auth/authorization';
+import { requireRole } from '@/lib/auth/authorization';
+import { ROLES } from '@/lib/constants/roles';
 
 export const metadata = {
   title: {
@@ -11,11 +12,11 @@ export const metadata = {
 };
 
 export default async function AdminLayout({ children }) {
-  const user = await getCurrentUser();
+  const user = await requireRole(ROLES.ADMIN);
   const adminData = {
-    name: user?.name || 'Administrator',
-    email: user?.email || '',
-    role: user?.role || 'ADMIN',
+    name: user.name || 'Administrator',
+    email: user.email || '',
+    role: user.role || 'ADMIN',
   };
 
   return <AdminShell adminData={adminData}>{children}</AdminShell>;
