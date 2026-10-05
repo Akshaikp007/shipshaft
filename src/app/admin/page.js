@@ -9,6 +9,7 @@ import Branch from '@/lib/models/Branch';
 import Agent from '@/lib/models/Agent';
 import Payment from '@/lib/models/Payment';
 import '@/lib/models/User';
+import { formatCurrency } from '@/lib/utils/formatters';
 
 export const metadata = {
   title: 'Command Center | ShipShaft Admin',
@@ -85,7 +86,7 @@ export default async function AdminDashboardPage() {
     origin: s.originBranchId?.city || 'Origin',
     destination: s.destinationBranchId?.city || 'Destination',
     agentName: s.agentId?.userId?.name || s.agentId?.employeeId || 'Unassigned',
-    amount: `$${Number(s.shippingCost || 0).toFixed(2)}`,
+    amount: formatCurrency(s.shippingCost),
     status: s.status,
     statusLabel: s.status.replace(/_/g, ' '),
     statusVariant:
@@ -119,7 +120,7 @@ export default async function AdminDashboardPage() {
     },
     {
       title: 'Total Revenue',
-      value: `$${totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      value: formatCurrency(totalRevenue),
       subtitle: 'Settled transit receivables',
       icon: 'payments',
     },

@@ -8,6 +8,7 @@ import '@/lib/models/User';
 import { getCurrentUser } from '@/lib/auth/authorization';
 import { ROLES } from '@/lib/constants/roles';
 import AgentDashboardClient from '@/components/agent/AgentDashboardClient';
+import { formatCurrency } from '@/lib/utils/formatters';
 
 export const metadata = {
   title: 'Agent Dashboard | ShipShaft',
@@ -66,7 +67,7 @@ export default async function AgentDashboardPage() {
       month: 'short',
       day: 'numeric',
     }),
-    amount: `$${Number(s.shippingCost || 0).toFixed(2)}`,
+    amount: formatCurrency(s.shippingCost),
     weight: s.weight,
     packageInfo: {
       category: s.packageDescription || 'General Cargo',

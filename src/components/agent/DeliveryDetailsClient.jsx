@@ -10,6 +10,7 @@ import ShipmentTimeline from '@/components/ui/ShipmentTimeline';
 import OTPVerificationModal from '@/components/ui/OTPVerificationModal';
 import Toast from '@/components/ui/Toast';
 import AgentLiveGpsTracker from './AgentLiveGpsTracker';
+import { formatCurrency } from '@/lib/utils/formatters';
 
 export default function DeliveryDetailsClient({ shipment: initialShipment }) {
   const [shipment, setShipment] = useState(initialShipment);
@@ -256,7 +257,7 @@ export default function DeliveryDetailsClient({ shipment: initialShipment }) {
               </div>
               <div>
                 <span className="text-on-surface-variant block">Payment Status</span>
-                <span className="font-bold text-tertiary">Prepaid Online (₹{shipment.pricing?.total || 450})</span>
+                <span className="font-bold text-tertiary">Prepaid Online ({formatCurrency(shipment.pricing?.total || 450)})</span>
               </div>
             </div>
           </div>

@@ -12,6 +12,7 @@ import '@/lib/models/User';
 import '@/lib/models/Branch';
 import { getCurrentUser } from '@/lib/auth/authorization';
 import { ROLES } from '@/lib/constants/roles';
+import { formatCurrency } from '@/lib/utils/formatters';
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
@@ -99,9 +100,9 @@ export default async function InvoicePage({ params }) {
       }).lean();
     }
 
-    const subtotalFormatted = `$${Number(dbInvoice.subtotal || 0).toFixed(2)}`;
-    const taxFormatted = `$${Number(dbInvoice.tax || 0).toFixed(2)}`;
-    const totalFormatted = `$${Number(dbInvoice.total || 0).toFixed(2)}`;
+    const subtotalFormatted = formatCurrency(dbInvoice.subtotal);
+    const taxFormatted = formatCurrency(dbInvoice.tax);
+    const totalFormatted = formatCurrency(dbInvoice.total);
 
     invoice = {
       invoiceNumber: dbInvoice.invoiceNumber,

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Icon from '@/components/ui/Icon';
+import { formatCurrency } from '@/lib/utils/formatters';
 
 export default function PaymentClient({
   shipmentId,
@@ -21,7 +22,7 @@ export default function PaymentClient({
   const [paymentData, setPaymentData] = useState(initialPayment || null);
   const [isPaid, setIsPaid] = useState(isAlreadyPaid);
 
-  const amountFormatted = `$${Number(initialShipment?.shippingCost || 0).toFixed(2)}`;
+  const amountFormatted = formatCurrency(initialShipment?.shippingCost || 0);
 
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
@@ -66,7 +67,7 @@ export default function PaymentClient({
 
   const trackingNum = initialShipment?.trackingNumber || shipmentId;
   const transactionId = paymentData?.transactionId || '';
-  const displayAmount = paymentData?.amount ? `$${Number(paymentData.amount).toFixed(2)}` : amountFormatted;
+  const displayAmount = paymentData?.amount ? formatCurrency(paymentData.amount) : amountFormatted;
 
   return (
     <div className="max-w-[1000px] mx-auto px-edge-margin-mobile md:px-edge-margin-desktop py-stack-xl min-h-screen flex flex-col justify-center">

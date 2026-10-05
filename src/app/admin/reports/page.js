@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Icon from '@/components/ui/Icon';
 import Button from '@/components/ui/Button';
 import Toast from '@/components/ui/Toast';
+import { formatCurrency } from '@/lib/utils/formatters';
 
 export default function AdminReportsPage() {
   const [range, setRange] = useState('30d');
@@ -301,10 +302,10 @@ export default function AdminReportsPage() {
           </span>
           <div className="flex items-baseline justify-between">
             <span className="font-headline-md text-2xl font-black text-on-surface">
-              {isLoading ? '...' : `₹${Number(totalRevenue).toLocaleString()}`}
+              {isLoading ? '...' : formatCurrency(totalRevenue, 'INR', { maximumFractionDigits: 0 })}
             </span>
             <span className="text-xs font-bold text-tertiary">
-              {overview?.revenue?.today ? `+₹${overview.revenue.today}` : 'Verified'}
+              {overview?.revenue?.today ? `+${formatCurrency(overview.revenue.today, 'INR', { maximumFractionDigits: 0 })}` : 'Verified'}
             </span>
           </div>
           <span className="text-[11px] text-on-surface-variant block">
@@ -517,7 +518,7 @@ export default function AdminReportsPage() {
               </p>
             </div>
             <span className="text-xs font-mono font-bold text-tertiary">
-              Total: ₹{Number(revenueReport?.totalRevenue || 0).toLocaleString()}
+              Total: {formatCurrency(revenueReport?.totalRevenue || 0, 'INR', { maximumFractionDigits: 0 })}
             </span>
           </div>
 
@@ -533,7 +534,7 @@ export default function AdminReportsPage() {
                 return (
                   <div key={item.date} className="flex-1 min-w-[28px] flex flex-col items-center gap-2 h-full justify-end group">
                     <span className="text-[10px] font-mono font-bold text-tertiary opacity-0 group-hover:opacity-100 transition-opacity">
-                      ₹{item.revenue}
+                      {formatCurrency(item.revenue, 'INR', { maximumFractionDigits: 0 })}
                     </span>
                     <div
                       className="w-full max-w-[32px] bg-gradient-to-t from-tertiary to-emerald-400 rounded-t-md transition-all duration-300 hover:brightness-110 shadow-sm"
@@ -574,7 +575,7 @@ export default function AdminReportsPage() {
                     <div className="flex justify-between items-center">
                       <span className="font-semibold text-on-surface">{tier.serviceType}</span>
                       <span className="font-mono text-on-surface-variant">
-                        ₹{tier.revenue.toLocaleString()} ({tier.count} pkgs)
+                        {formatCurrency(tier.revenue, 'INR', { maximumFractionDigits: 0 })} ({tier.count} pkgs)
                       </span>
                     </div>
                     <div className="w-full h-2 rounded-full bg-outline-variant/20 overflow-hidden">
@@ -635,7 +636,7 @@ export default function AdminReportsPage() {
                     <td className="py-3 px-3 text-center font-bold text-primary">{b.activeShipments}</td>
                     <td className="py-3 px-3 text-center font-bold text-tertiary">{b.deliveredShipments}</td>
                     <td className="py-3 px-3 text-right font-mono font-bold text-on-surface">
-                      ₹{b.revenue.toLocaleString()}
+                      {formatCurrency(b.revenue, 'INR', { maximumFractionDigits: 0 })}
                     </td>
                   </tr>
                 ))

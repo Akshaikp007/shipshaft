@@ -10,6 +10,7 @@ import Modal from '@/components/ui/Modal';
 import Input from '@/components/ui/Input';
 import Select from '@/components/ui/Select';
 import Toast from '@/components/ui/Toast';
+import { formatCurrency } from '@/lib/utils/formatters';
 
 export default function AdminShipmentsPage() {
   const [shipments, setShipments] = useState([]);
@@ -40,7 +41,7 @@ export default function AdminShipmentsPage() {
   const [origin, setOrigin] = useState('Kochi');
   const [destination, setDestination] = useState('Calicut');
   const [weight, setWeight] = useState('5.0 kg');
-  const [amount, setAmount] = useState('₹450');
+  const [amount, setAmount] = useState(formatCurrency(450));
 
   const handleCreateShipment = (e) => {
     e.preventDefault();
@@ -129,7 +130,7 @@ export default function AdminShipmentsPage() {
       align: 'right',
       render: (val) => (
         <span className="font-mono font-bold text-on-surface">
-          {val || '₹450'}
+          {val ? (String(val).startsWith('₹') ? val : formatCurrency(val)) : formatCurrency(450)}
         </span>
       ),
     },

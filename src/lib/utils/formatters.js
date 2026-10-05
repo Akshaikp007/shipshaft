@@ -1,21 +1,24 @@
 import { SHIPMENT_STATUS_LABELS } from '../constants';
 
 /**
- * Formats a monetary amount into a localized currency string.
- * @param {number} amount
- * @param {string} currency - default 'USD'
+ * Formats a monetary amount into a localized currency string using Intl.NumberFormat.
+ * @param {number|string} amount - Monetary amount
+ * @param {string} currency - default 'INR'
+ * @param {Intl.NumberFormatOptions} [options] - Additional formatting options
  * @returns {string}
  */
-export function formatCurrency(amount, currency = 'USD') {
-  if (typeof amount !== 'number' || isNaN(amount)) {
-    return '$0.00';
+export function formatCurrency(amount, currency = 'INR', options = {}) {
+  const numericAmount = typeof amount === 'number' ? amount : Number(amount);
+  if (isNaN(numericAmount)) {
+    return '₹0.00';
   }
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency,
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(amount);
+    ...options,
+  }).format(numericAmount);
 }
 
 /**

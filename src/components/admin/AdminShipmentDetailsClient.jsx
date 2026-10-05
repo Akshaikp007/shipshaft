@@ -9,6 +9,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import ShipmentTimeline from '@/components/ui/ShipmentTimeline';
 import Select from '@/components/ui/Select';
 import Toast from '@/components/ui/Toast';
+import { formatCurrency } from '@/lib/utils/formatters';
 
 export default function AdminShipmentDetailsClient({ shipment, availableAgents = [] }) {
   const [assignedAgent, setAssignedAgent] = useState(shipment.agent?._id || shipment.agent?.id || '');
@@ -213,7 +214,7 @@ export default function AdminShipmentDetailsClient({ shipment, availableAgents =
               </div>
               <div>
                 <span className="text-on-surface-variant block">Freight Charge</span>
-                <span className="font-mono font-bold text-primary text-sm">{shipment.amount || '$0.00'}</span>
+                <span className="font-mono font-bold text-primary text-sm">{shipment.amount || formatCurrency(0)}</span>
               </div>
             </div>
           </div>

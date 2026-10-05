@@ -11,6 +11,7 @@ import { getCurrentUser } from '@/lib/auth/authorization';
 import { ROLES } from '@/lib/constants/roles';
 import { getEligibleAgentsForBranch } from '@/lib/services/assignmentService';
 import AdminShipmentDetailsClient from '@/components/admin/AdminShipmentDetailsClient';
+import { formatCurrency } from '@/lib/utils/formatters';
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
@@ -190,7 +191,7 @@ export default async function AdminShipmentDetailsPage({ params }) {
             day: 'numeric',
           })
         : 'Pending',
-      amount: `$${Number(dbShipment.shippingCost || 0).toFixed(2)}`,
+      amount: formatCurrency(dbShipment.shippingCost),
       agent: agentDoc
         ? {
             _id: agentDoc._id.toString(),

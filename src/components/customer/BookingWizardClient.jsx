@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Icon from '@/components/ui/Icon';
+import { formatCurrency } from '@/lib/utils/formatters';
 
 export default function BookingWizardClient() {
   const router = useRouter();
@@ -120,7 +121,7 @@ export default function BookingWizardClient() {
   const calculateEstimate = () => {
     const base = serviceTier === 'priority' ? 450 : serviceTier === 'express' ? 320 : 180;
     const weightFee = Number(parcel.weight || 10) * 1.5;
-    return `$${(base + weightFee).toFixed(2)}`;
+    return formatCurrency(base + weightFee);
   };
 
   const handleBookingSubmit = async (e) => {
@@ -688,9 +689,9 @@ export default function BookingWizardClient() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
                 {[
-                  { id: 'standard', name: 'Standard Ground', eta: '4-5 Days', price: '$180.00' },
-                  { id: 'express', name: 'Express Freight', eta: '2-3 Days', price: '$320.00' },
-                  { id: 'priority', name: 'Priority Air Hub', eta: 'Next Day', price: '$450.00' },
+                  { id: 'standard', name: 'Standard Ground', eta: '4-5 Days', price: formatCurrency(180) },
+                  { id: 'express', name: 'Express Freight', eta: '2-3 Days', price: formatCurrency(320) },
+                  { id: 'priority', name: 'Priority Air Hub', eta: 'Next Day', price: formatCurrency(450) },
                 ].map((tier) => (
                   <label
                     key={tier.id}

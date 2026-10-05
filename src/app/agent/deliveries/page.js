@@ -8,6 +8,7 @@ import '@/lib/models/User';
 import { getCurrentUser } from '@/lib/auth/authorization';
 import { ROLES } from '@/lib/constants/roles';
 import AgentDeliveriesClient from '@/components/agent/AgentDeliveriesClient';
+import { formatCurrency } from '@/lib/utils/formatters';
 
 export const metadata = {
   title: 'Delivery Queue | ShipShaft Agent',
@@ -66,7 +67,7 @@ export default async function AgentDeliveriesPage() {
       month: 'short',
       day: 'numeric',
     }),
-    amount: `$${Number(s.shippingCost || 0).toFixed(2)}`,
+    amount: formatCurrency(s.shippingCost),
     weight: s.weight,
     packageInfo: {
       category: s.packageDescription || 'General Freight',

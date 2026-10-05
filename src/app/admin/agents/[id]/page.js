@@ -7,6 +7,7 @@ import Agent from '@/lib/models/Agent';
 import Shipment from '@/lib/models/Shipment';
 import '@/lib/models/User';
 import '@/lib/models/Branch';
+import { formatCurrency } from '@/lib/utils/formatters';
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
@@ -53,7 +54,7 @@ export default async function AdminAgentDetailsPage({ params }) {
         : 'primary',
     origin: s.originBranchId?.city || 'Origin',
     destination: s.destinationBranchId?.city || 'Destination',
-    amount: `$${Number(s.shippingCost || 0).toFixed(2)}`,
+    amount: formatCurrency(s.shippingCost),
     weight: `${s.weight} kg`,
     recipient: { name: s.receiverName },
     date: new Date(s.createdAt).toLocaleDateString('en-US', {

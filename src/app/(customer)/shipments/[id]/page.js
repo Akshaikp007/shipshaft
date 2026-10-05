@@ -10,6 +10,7 @@ import Shipment from '@/lib/models/Shipment';
 import TrackingEvent from '@/lib/models/TrackingEvent';
 import '@/lib/models/Branch';
 import { ALL_SHIPMENT_STATUSES } from '@/lib/constants/shipmentStatus';
+import { formatCurrency } from '@/lib/utils/formatters';
 import DeliveryOtpNotice from '@/components/customer/DeliveryOtpNotice';
 import CustomerLiveTrackingMap from '@/components/customer/CustomerLiveTrackingMap';
 import QRDisplay from '@/components/domain/QRDisplay';
@@ -82,7 +83,7 @@ export default async function ShipmentDetailsPage({ params }) {
         : dbShipment.status === 'BOOKED'
         ? 'info'
         : 'primary',
-    shippingCost: `$${Number(dbShipment.shippingCost || 0).toFixed(2)}`,
+    shippingCost: formatCurrency(dbShipment.shippingCost),
     serviceType: dbShipment.serviceType,
     originFull: dbShipment.originBranchId?.name
       ? `${dbShipment.originBranchId.name} (${dbShipment.originBranchId.code})`

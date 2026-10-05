@@ -12,7 +12,12 @@ export const metadata = {
   title: "ShipShaft | Precision Logistics Intelligence",
   description: "Redefining global logistics through atmospheric data and precision intelligence.",
   icons: {
-    icon: "/favicon.svg",
+    icon: [
+      { url: "/icon.png", type: "image/png" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/icon.png",
   },
 };
 
