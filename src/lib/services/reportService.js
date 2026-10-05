@@ -120,7 +120,12 @@ export async function getOverviewReport(dateParams = {}) {
     }),
     Shipment.countDocuments({
       status: {
-        $in: [SHIPMENT_STATUS.BOOKED, SHIPMENT_STATUS.PAYMENT_CONFIRMED, SHIPMENT_STATUS.ASSIGNED],
+        $in: [
+          SHIPMENT_STATUS.BOOKED,
+          'PAYMENT_PENDING',
+          SHIPMENT_STATUS.PAYMENT_CONFIRMED,
+          SHIPMENT_STATUS.ASSIGNED,
+        ],
       },
     }),
   ]);

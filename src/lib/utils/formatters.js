@@ -12,12 +12,23 @@ export function formatCurrency(amount, currency = 'INR', options = {}) {
   if (isNaN(numericAmount)) {
     return '₹0.00';
   }
+  const minDigits =
+    options.minimumFractionDigits !== undefined
+      ? options.minimumFractionDigits
+      : options.maximumFractionDigits !== undefined
+      ? Math.min(2, options.maximumFractionDigits)
+      : 2;
+  const maxDigits =
+    options.maximumFractionDigits !== undefined
+      ? options.maximumFractionDigits
+      : Math.max(2, minDigits);
+
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
     ...options,
+    minimumFractionDigits: minDigits,
+    maximumFractionDigits: maxDigits,
   }).format(numericAmount);
 }
 

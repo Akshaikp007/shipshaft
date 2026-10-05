@@ -8,6 +8,7 @@ import Shipment from '@/lib/models/Shipment';
 import Branch from '@/lib/models/Branch';
 import Agent from '@/lib/models/Agent';
 import Payment from '@/lib/models/Payment';
+import TrackingEvent from '@/lib/models/TrackingEvent';
 import '@/lib/models/User';
 import { formatCurrency } from '@/lib/utils/formatters';
 
@@ -37,19 +38,53 @@ export default async function AdminDashboardPage() {
   ]);
   const totalRevenue = revenueAgg[0]?.total || 0;
 
-  // 2. Hub Capacity & Health
+  // 2. Logistic Hub Operation Details (Authoritative MongoDB Aggregations)
   const rawBranches = await Branch.find().lean();
   const branches = await Promise.all(
     rawBranches.map(async (b) => {
-      const [activeCount, agentCount] = await Promise.all([
+      const [
+        activeCount,
+        incomingCount,
+        outgoingCount,
+        atHubCount,
+        inTransitCount,
+        pendingCount,
+        agentCount,
+        trackingEventCount,
+      ] = await Promise.all([
         Shipment.countDocuments({
           $or: [{ originBranchId: b._id }, { destinationBranchId: b._id }],
           status: { $nin: ['DELIVERED', 'CANCELLED'] },
         }),
+        Shipment.countDocuments({
+          destinationBranchId: b._id,
+          status: { $in: ['IN_TRANSIT', 'DESTINATION_HUB', 'OUT_FOR_DELIVERY'] },
+        }),
+        Shipment.countDocuments({
+          originBranchId: b._id,
+          status: { $in: ['PICKED_UP', 'ORIGIN_HUB', 'IN_TRANSIT'] },
+        }),
+        Shipment.countDocuments({
+          $or: [
+            { originBranchId: b._id, status: 'ORIGIN_HUB' },
+            { destinationBranchId: b._id, status: 'DESTINATION_HUB' },
+          ],
+        }),
+        Shipment.countDocuments({
+          $or: [{ originBranchId: b._id }, { destinationBranchId: b._id }],
+          status: 'IN_TRANSIT',
+        }),
+        Shipment.countDocuments({
+          originBranchId: b._id,
+          status: { $in: ['BOOKED', 'PAYMENT_PENDING', 'PAYMENT_CONFIRMED', 'ASSIGNED'] },
+        }),
         Agent.countDocuments({ branchId: b._id }),
+        TrackingEvent.countDocuments({ branchId: b._id }),
       ]);
       const maxCapacity = 100;
       const usagePercent = Math.min(Math.round((activeCount / maxCapacity) * 100), 100);
+
+      const isOperational = b.isActive !== false && b.status !== 'INACTIVE';
 
       return {
         id: b._id.toString(),
@@ -59,7 +94,16 @@ export default async function AdminDashboardPage() {
         state: b.state,
         manager: b.manager || 'Operations Lead',
         activeShipments: activeCount,
+        incomingShipments: incomingCount,
+        outgoingShipments: outgoingCount,
+        atHubShipments: atHubCount,
+        inTransitShipments: inTransitCount,
+        pendingShipments: pendingCount,
         totalAgents: agentCount,
+        trackingEvents: trackingEventCount,
+        operationalStatus: isOperational ? 'Operational' : 'Maintenance',
+        statusVariant: isOperational ? 'success' : 'neutral',
+        isOperational,
         capacityUsage: `${usagePercent}%`,
         usageNumber: usagePercent,
       };
@@ -184,21 +228,21 @@ export default async function AdminDashboardPage() {
 
       {/* Center Section: Hub Operations & Live Telemetry Stream */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Hub Capacity & Health */}
+        {/* Logistic Hub Operation Details */}
         <div className="lg:col-span-7 glass-panel border border-outline-variant/30 rounded-3xl p-6 bg-white/95 shadow-sm space-y-5">
           <div className="flex items-center justify-between border-b border-outline-variant/20 pb-4">
             <div>
               <h2 className="font-headline-md text-lg font-bold text-on-surface flex items-center gap-2">
                 <Icon name="warehouse" size={20} className="text-primary" />
-                <span>Network Hub Capacity & Health</span>
+                <span>Logistic Hub Operation Details</span>
               </h2>
               <p className="font-body-md text-xs text-on-surface-variant mt-0.5">
-                Real-time throughput and storage thresholds across key logistics nodes.
+                Real-time operational throughput, storage capacity, and transit corridor metrics across logistics hubs.
               </p>
             </div>
             <Link
               href="/admin/branches"
-              className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
+              className="text-xs font-bold text-primary hover:underline flex items-center gap-1 shrink-0"
             >
               <span>All Hubs ({branches.length})</span>
               <Icon name="arrow_forward" size={14} />
@@ -207,42 +251,121 @@ export default async function AdminDashboardPage() {
 
           <div className="space-y-4">
             {branches.length === 0 ? (
-              <div className="p-8 text-center text-xs text-on-surface-variant font-medium">
-                No branches found.
+              <div className="p-8 text-center rounded-2xl bg-surface-container-low/40 border border-outline-variant/20 space-y-3">
+                <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto">
+                  <Icon name="warehouse" size={24} />
+                </div>
+                <div>
+                  <h3 className="font-headline-md text-sm font-bold text-on-surface">No Logistics Hubs Found</h3>
+                  <p className="font-body-md text-xs text-on-surface-variant mt-1 max-w-sm mx-auto">
+                    No operational hubs or regional distribution centers are registered in the system yet.
+                  </p>
+                </div>
+                <Link href="/admin/branches">
+                  <Button variant="primary" size="sm" icon={<Icon name="add" size={16} />}>
+                    Register First Hub
+                  </Button>
+                </Link>
               </div>
             ) : (
               branches.map((hub) => (
                 <div
                   key={hub.id}
-                  className="p-3.5 rounded-2xl bg-surface-container-low/50 hover:bg-surface-container-low transition-colors border border-outline-variant/20 space-y-2"
+                  className="p-4 rounded-2xl bg-surface-container-low/50 hover:bg-surface-container-low transition-colors border border-outline-variant/20 space-y-3"
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-start justify-between gap-2">
                     <div>
-                      <span className="font-label-md text-xs font-bold text-on-surface block">
-                        {hub.name} ({hub.code})
-                      </span>
-                      <span className="text-[11px] text-on-surface-variant">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-label-md text-xs font-bold text-on-surface">
+                          {hub.name}
+                        </span>
+                        <span className="font-mono text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">
+                          {hub.code}
+                        </span>
+                        <StatusBadge
+                          label={hub.operationalStatus}
+                          variant={hub.statusVariant}
+                          pulse={hub.isOperational}
+                        />
+                      </div>
+                      <span className="text-[11px] text-on-surface-variant block mt-0.5">
                         {hub.city}, {hub.state} • Manager: {hub.manager}
                       </span>
                     </div>
-                    <div className="text-right">
+                    <div className="text-right shrink-0">
                       <span className="font-mono text-xs font-bold text-primary block">
                         {hub.capacityUsage} Capacity
                       </span>
                       <span className="text-[11px] text-on-surface-variant">
-                        {hub.activeShipments} Active / {hub.totalAgents} Agents
+                        {hub.totalAgents} Agents
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Operational Metrics Grid */}
+                  <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 pt-1 text-center">
+                    <div className="p-2 rounded-xl bg-surface/80 border border-outline-variant/20">
+                      <span className="text-[10px] uppercase font-semibold text-on-surface-variant block">Incoming</span>
+                      <span className="font-mono text-xs font-bold text-primary flex items-center justify-center gap-0.5 mt-0.5">
+                        <Icon name="flight_land" size={13} className="text-secondary" />
+                        {hub.incomingShipments}
+                      </span>
+                    </div>
+
+                    <div className="p-2 rounded-xl bg-surface/80 border border-outline-variant/20">
+                      <span className="text-[10px] uppercase font-semibold text-on-surface-variant block">Outgoing</span>
+                      <span className="font-mono text-xs font-bold text-primary flex items-center justify-center gap-0.5 mt-0.5">
+                        <Icon name="flight_takeoff" size={13} className="text-primary" />
+                        {hub.outgoingShipments}
+                      </span>
+                    </div>
+
+                    <div className="p-2 rounded-xl bg-surface/80 border border-outline-variant/20">
+                      <span className="text-[10px] uppercase font-semibold text-on-surface-variant block">At Hub</span>
+                      <span className="font-mono text-xs font-bold text-tertiary flex items-center justify-center gap-0.5 mt-0.5">
+                        <Icon name="inventory_2" size={13} className="text-tertiary" />
+                        {hub.atHubShipments}
+                      </span>
+                    </div>
+
+                    <div className="p-2 rounded-xl bg-surface/80 border border-outline-variant/20">
+                      <span className="text-[10px] uppercase font-semibold text-on-surface-variant block">In Transit</span>
+                      <span className="font-mono text-xs font-bold text-amber-700 flex items-center justify-center gap-0.5 mt-0.5">
+                        <Icon name="local_shipping" size={13} className="text-amber-600" />
+                        {hub.inTransitShipments}
+                      </span>
+                    </div>
+
+                    <div className="p-2 rounded-xl bg-surface/80 border border-outline-variant/20 col-span-3 sm:col-span-1">
+                      <span className="text-[10px] uppercase font-semibold text-on-surface-variant block">Pending</span>
+                      <span className="font-mono text-xs font-bold text-on-surface flex items-center justify-center gap-0.5 mt-0.5">
+                        <Icon name="hourglass_empty" size={13} className="text-outline" />
+                        {hub.pendingShipments}
                       </span>
                     </div>
                   </div>
 
                   {/* Progress bar */}
-                  <div className="w-full h-2 rounded-full bg-outline-variant/30 overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all duration-500 ${
-                        hub.usageNumber > 80 ? 'bg-error' : 'bg-primary'
-                      }`}
-                      style={{ width: hub.capacityUsage }}
-                    />
+                  <div className="space-y-1">
+                    <div className="w-full h-1.5 rounded-full bg-outline-variant/30 overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all duration-500 ${
+                          hub.usageNumber > 80 ? 'bg-error' : 'bg-primary'
+                        }`}
+                        style={{ width: hub.capacityUsage }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between text-[11px] text-on-surface-variant pt-0.5">
+                    <span>{hub.activeShipments} active consignments • {hub.trackingEvents} events</span>
+                    <Link
+                      href={`/admin/branches/${hub.id}`}
+                      className="text-primary font-bold hover:underline inline-flex items-center gap-0.5"
+                    >
+                      <span>Hub Details</span>
+                      <Icon name="chevron_right" size={14} />
+                    </Link>
                   </div>
                 </div>
               ))
