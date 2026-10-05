@@ -162,7 +162,7 @@ export default async function InvoicePage({ params }) {
             Back to Shipment
           </Link>
         </div>
-        <InvoiceActionsClient />
+        <InvoiceActionsClient invoice={invoice} />
       </div>
 
       {/* Document Canvas */}
